@@ -1,0 +1,63 @@
+- name: modify directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - "{{ dir.home }}"
+    - "{{ dir.conf }}"
+    - "{{ dir.log }}"
+
+- name: pip install supervisord
+  pip:
+    name: supervisor
+    version: "{{ version }}"
+    virtualenv: "{{ dir.venv }}"
+
+- name: pip install superlance (clashmail)
+  pip:
+    name: superlance
+    virtualenv: "{{ dir.venv }}"
+
+- name: modify init
+  template:
+    src: init
+    dest: /etc/init.d/supervisord
+    owner: root
+    group: root
+    mode: 0755
+
+- name: modify supervisord.conf
+  template:
+    src: supervisord.conf
+    dest: "{{ dir.home }}/supervisord.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart supervisord
+
+- name: modify sub config
+  template:
+    src: "conf.d/{{ item }}"
+    dest: "{{ dir.conf }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - crashmail.conf
+
+- name: supervisord is enabled
+  service:
+    name: supervisord
+    state: started
+    enabled: yes
+
+- name: modify logrotate conf
+  template:
+    src: logrotate
+    dest: /etc/logrotate.d/supervisord
+    owner: root
+    group: root
+    mode: 0644

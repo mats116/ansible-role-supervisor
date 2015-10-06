@@ -1,0 +1,13 @@
+{{ dir.log }}/*.log {
+        daily
+        missingok
+        rotate 10
+        compress
+        delaycompress
+        notifempty
+        create 644 root root
+        sharedscripts
+        postrotate
+                [ -f {{ pidfile }} ] && kill -HUP `cat {{ pidfile }}`
+        endscript
+}
