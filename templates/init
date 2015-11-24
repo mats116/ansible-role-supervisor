@@ -13,18 +13,18 @@
 
 . /lib/lsb/init-functions
 
-. {{ dir.venv }}/bin/activate
+. {{ supervisor_path_venv }}/bin/activate
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON={{ dir.venv }}/bin/supervisord
-SUPERVISORCTL={{ dir.venv }}/bin/supervisorctl
+DAEMON={{ supervisor_path_venv }}/bin/supervisord
+SUPERVISORCTL={{ supervisor_path_venv }}/bin/supervisorctl
 NAME=supervisord
 DESC=supervisor
 
 test -x $DAEMON || exit 0
 
-LOGDIR={{ dir.log }}
-PIDFILE={{ pidfile }}
+LOGDIR={{ supervisor_path_log }}
+PIDFILE={{ supervisor_pidfile }}
 DODTIME=5                   # Time to wait for the server to die, in seconds
                             # If this value is set too low you might not
                             # let some servers to die gracefully and
@@ -34,7 +34,7 @@ DODTIME=5                   # Time to wait for the server to die, in seconds
 if [ -f /etc/default/supervisor ] ; then
     . /etc/default/supervisor
 fi
-DAEMON_OPTS="-c {{ dir.home }}/supervisord.conf $DAEMON_OPTS"
+DAEMON_OPTS="-c {{ supervisor_path_home }}/supervisord.conf $DAEMON_OPTS"
 
 set -e
 

@@ -1,9 +1,10 @@
-version: "3.1.3"
+supervisor_version: "3.1.3"
 
-dir:
-  home: '/etc/supervisord'
-  conf: '/etc/supervisord/conf.d'
-  log: '/var/log/supervisord'
-  venv: '/etc/supervisord/venv'
+supervisor_pidfile: "/var/run/supervisord.pid"
 
-pidfile: '/var/run/supervisord.pid'
+supervisor_path_home: "/etc/supervisord"
+supervisor_path_conf: "/etc/supervisord/conf.d"
+supervisor_path_log: "/var/log/supervisord"
+supervisor_path_venv: "/etc/supervisord/venv"
+
+crashmail_address: example@example.com

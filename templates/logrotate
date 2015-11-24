@@ -1,4 +1,4 @@
-{{ dir.log }}/*.log {
+{{ supervisor_path_log }}/*.log {
         daily
         missingok
         rotate 10
@@ -8,6 +8,6 @@
         create 644 root root
         sharedscripts
         postrotate
-                [ -f {{ pidfile }} ] && kill -HUP `cat {{ pidfile }}`
+                [ -f {{ supervisor_pidfile }} ] && kill -HUP `cat {{ supervisor_pidfile }}`
         endscript
 }

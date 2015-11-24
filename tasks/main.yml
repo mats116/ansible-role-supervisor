@@ -6,20 +6,20 @@
     group: root
     mode: 0755
   with_items:
-    - "{{ dir.home }}"
-    - "{{ dir.conf }}"
-    - "{{ dir.log }}"
+    - "{{ supervisor_path_home }}"
+    - "{{ supervisor_path_conf }}"
+    - "{{ supervisor_path_log }}"
 
 - name: pip install supervisord
   pip:
     name: supervisor
-    version: "{{ version }}"
-    virtualenv: "{{ dir.venv }}"
+    version: "{{ supervisor_version }}"
+    virtualenv: "{{ supervisor_path_venv }}"
 
 - name: pip install superlance (clashmail)
   pip:
     name: superlance
-    virtualenv: "{{ dir.venv }}"
+    virtualenv: "{{ supervisor_path_venv }}"
 
 - name: modify init
   template:
@@ -32,7 +32,7 @@
 - name: modify supervisord.conf
   template:
     src: supervisord.conf
-    dest: "{{ dir.home }}/supervisord.conf"
+    dest: "{{ supervisor_path_home }}/supervisord.conf"
     owner: root
     group: root
     mode: 0644
@@ -41,7 +41,7 @@
 - name: modify sub config
   template:
     src: "conf.d/{{ item }}"
-    dest: "{{ dir.conf }}/{{ item }}"
+    dest: "{{ supervisor_path_conf }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
