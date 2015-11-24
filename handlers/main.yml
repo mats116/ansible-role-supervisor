@@ -1,4 +1,4 @@
-- name: restart supervisord
+- name: restart supervisor
   service:
-    name: supervisord
+    name: supervisor
     state: restarted
