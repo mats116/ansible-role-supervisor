@@ -1,0 +1,24 @@
+- name: install python
+  apt:
+    name: "{{ item }}"
+    state: present
+    force: yes
+  with_items:
+   - python2.7
+   - python2.7-dev
+   - python-pip
+   - python-virtualenv
+
+- name: pip install superlance (clashmail)
+  pip:
+    name: superlance
+    virtualenv: /etc/supervisor/venv
+
+- name: modify crashmail.conf
+  template:
+    src: conf.d/crashmail.conf
+    dest: /etc/supervisor/conf.d/crashmail.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart supervisor
